@@ -118,37 +118,29 @@ while True:
     break
 
 
-def bfs_mapa(mapa):
-    # Inicializa la cola con una tupla: (posición actual, camino recorrido hasta ahora)
-    cola = deque([(entrada, [entrada])])
-    visitados = set()
-    # Mientras haya nodos por explorar en la cola toma el primer nodo en la cola, si ya fue visitado, lo salta
+def bfs_mapa(mapa, entrada, salida, filas, columnas):
+    cola = deque([entrada])
+    visitados = set([entrada])
+    padres = {entrada: None}
+
+    direcciones = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
     while cola:
-        (fila, columna), camino = cola.popleft()
-        if (fila, columna) in visitados:
-            continue
-        visitados.add((fila, columna))
-        # Si llegó a la salida, retorna el camino completo
-        if mapa[fila][columna] == "S":
-            return camino
-        # Recorre en 4 direcciones, arriba, abajo, izquierda, derecha
-        for desplazamiento_fila, desplazamiento_columna in [
-            (0, 1),
-            (0, -1),
-            (1, 0),
-            (-1, 0),
-        ]:
-            nueva_fila = fila + desplazamiento_fila
-            nueva_columna = columna + desplazamiento_columna
-            if 0 <= nueva_fila < filas and 0 <= nueva_columna < columnas:
-                if mapa[nueva_fila][nueva_columna] in (".", "S"):
-                    # Agrega la nueva posición a la cola junto con el camino actualizado
-                    cola.append(
-                        (
-                            (nueva_fila, nueva_columna),
-                            camino + [(nueva_fila, nueva_columna)],
-                        )
-                    )
+        fila, columna = cola.popleft()
+
+        if (fila, columna) == salida:
+            return reconstruir_camino(padres, salida)
+
+        for df, dc in direcciones:
+            nf, nc = fila + df, columna + dc
+            vecino = (nf, nc)
+
+            if 0 <= nf < filas and 0 <= nc < columnas:
+                if vecino not in visitados and mapa[nf][nc] in (".", "S"):
+                    visitados.add(vecino)
+                    padres[vecino] = (fila, columna)
+                    cola.append(vecino)
+
     return None
 
 
