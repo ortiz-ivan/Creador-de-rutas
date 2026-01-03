@@ -118,6 +118,17 @@ while True:
     break
 
 
+def reconstruir_camino(padres, salida):
+    camino = []
+    actual = salida
+
+    while actual is not None:
+        camino.append(actual)
+        actual = padres[actual]
+
+    return camino[::-1]
+
+
 def bfs_mapa(mapa, entrada, salida, filas, columnas):
     cola = deque([entrada])
     visitados = set([entrada])
