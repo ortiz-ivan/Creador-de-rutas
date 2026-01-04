@@ -1,0 +1,7 @@
+VACIO = "."
+ENTRADA = "E"
+SALIDA = "S"
+OBSTACULO_USER = "X"
+EDIFICIO = "#"
+AGUA = "@"
+CAMINO = "*"
